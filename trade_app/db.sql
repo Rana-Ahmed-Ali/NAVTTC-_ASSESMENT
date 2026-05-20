@@ -1,0 +1,26 @@
+CREATE DATABASE IF NOT EXISTS navttc_trades;
+USE navttc_trades;
+
+CREATE TABLE IF NOT EXISTS trades (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    trade_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    father_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (trade_id) REFERENCES trades(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS student_photos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    photo_type VARCHAR(50) NOT NULL, -- Practical 1, Practical 2, Subjective, Objective
+    file_path VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+);

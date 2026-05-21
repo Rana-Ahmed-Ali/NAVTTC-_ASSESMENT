@@ -162,10 +162,8 @@ unset($_SESSION['login_error']);
     <div class="login-container">
         <div class="login-card glass">
             <div class="login-logo">
-                <div class="icon-circle">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <h1>NAVTTC Portal</h1>
+                <img src="assets/logo/navttc.png" alt="NAVTTC Logo" class="login-logo-img" style="height: 70px; width: auto; object-fit: contain; margin-bottom: 1rem;">
+                <h1>NAVTTC Institute Assessment</h1>
                 <p>Trade Assessment System</p>
             </div>
 
@@ -193,9 +191,10 @@ unset($_SESSION['login_error']);
                 </button>
             </form>
 
-            <!-- <div class="login-footer">
-                <i class="fa-solid fa-shield-halved"></i> Secured session-based authentication
-            </div> -->
+            <div class="login-footer" style="margin-top: 1.5rem; text-align: center; font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.5rem; justify-content: center; align-items: center; border-top: 1px solid var(--surface-border); padding-top: 1rem;">
+                <div><i class="fa-solid fa-shield-halved" style="color: var(--success); margin-right: 0.25rem;"></i> Secured session-based authentication</div>
+                <!-- <div style="font-size: 0.8rem; opacity: 0.8;">Developed with <i class="fa-solid fa-heart" style="color: var(--danger); margin: 0 0.15rem;"></i> by <strong style="color: var(--primary-color);">Ahmed Ali</strong></div> -->
+            </div>
         </div>
     </div>
 

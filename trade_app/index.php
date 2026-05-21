@@ -20,8 +20,8 @@ $currentUser = htmlspecialchars($_SESSION['user']);
 
     <aside class="sidebar glass">
         <div class="brand">
-            <i class="fa-solid fa-graduation-cap"></i>
-            NAVTTC Portal
+            <img src="assets/logo/navttc.png" alt="NAVTTC Logo" class="brand-logo-img">
+            <span>NAVTTC Institute Assessment</span>
         </div>
         <nav class="nav-menu">
             <a class="nav-item active" data-target="trades-view">
@@ -46,6 +46,22 @@ $currentUser = htmlspecialchars($_SESSION['user']);
     </aside>
 
     <main class="main-content">
+        <!-- Mobile Top Header Bar -->
+        <header class="mobile-header glass">
+            <div class="mobile-brand">
+                <img src="assets/logo/navttc.png" alt="NAVTTC Logo" class="brand-logo-img" style="height: 32px; width: auto; object-fit: contain;">
+                <span>NAVTTC Institute Assessment</span>
+            </div>
+            <div class="mobile-user-status">
+                <div class="mobile-user-info">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span><?php echo $currentUser; ?></span>
+                </div>
+                <a href="logout.php" class="mobile-logout-btn" title="Sign Out">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+            </div>
+        </header>
         
         <!-- Trades View -->
         <section id="trades-view" class="section active">
@@ -184,6 +200,10 @@ $currentUser = htmlspecialchars($_SESSION['user']);
             </div>
         </section>
 
+        <!-- Footer Attribution -->
+        <footer class="app-footer">
+            <p>Developed with <i class="fa-solid fa-heart" style="color: var(--danger);"></i> by <strong>Ahmed Ali</strong></p>
+        </footer>
     </main>
 
     <!-- Hidden Canvas for capturing -->

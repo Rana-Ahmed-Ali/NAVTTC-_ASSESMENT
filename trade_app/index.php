@@ -98,11 +98,16 @@ $currentUser = htmlspecialchars($_SESSION['user']);
         <!-- Enrollments View (Select Trade -> List Students) -->
         <section id="enrollments-view" class="section">
             <h2>Enrolled Students</h2>
-            <div class="form-group">
-                <label for="filter-trade">Select Trade to View Students</label>
-                <select id="filter-trade" class="form-control">
-                    <option value="">Select a trade</option>
-                </select>
+            <div class="enrollments-header-flex" style="display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 2rem;">
+                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                    <label for="filter-trade">Select Trade to View Students</label>
+                    <select id="filter-trade" class="form-control">
+                        <option value="">Select a trade</option>
+                    </select>
+                </div>
+                <a href="#" id="download-trade-btn" class="btn btn-outline" style="display: none; height: 50px; padding: 0 1.5rem; white-space: nowrap;" target="_blank">
+                    <i class="fa-solid fa-file-zipper"></i> Download Trade ZIP
+                </a>
             </div>
             
             <div class="grid" id="students-list" style="margin-top: 2rem;">

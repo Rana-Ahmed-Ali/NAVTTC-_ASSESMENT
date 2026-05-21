@@ -1,16 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --bg-color: #0f172a;
-    --surface-color: rgba(30, 41, 59, 0.7);
-    --surface-border: rgba(255, 255, 255, 0.1);
-    --primary-color: #6366f1;
-    --primary-hover: #4f46e5;
-    --secondary-color: #ec4899;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --success: #10b981;
-    --danger: #ef4444;
+    --bg-color: #f8fafc;
+    --surface-color: rgba(255, 255, 255, 0.7);
+    --surface-border: rgba(15, 23, 42, 0.08);
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --secondary-color: #db2777;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --success: #059669;
+    --danger: #dc2626;
+    --input-bg: rgba(15, 23, 42, 0.04);
+    --modal-bg: rgba(15, 23, 42, 0.4);
+    --shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
 }
 
 * {
@@ -26,8 +29,8 @@ body {
     min-height: 100vh;
     display: flex;
     overflow-x: hidden;
-    background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 40%),
-                      radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.15), transparent 40%);
+    background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.08), transparent 40%);
 }
 
 /* Glassmorphism utilities */
@@ -37,7 +40,7 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--surface-border);
     border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
 }
 
 /* Sidebar */
@@ -130,7 +133,7 @@ h2 {
 .form-control {
     width: 100%;
     padding: 1rem;
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--input-bg);
     border: 1px solid var(--surface-border);
     border-radius: 8px;
     color: var(--text-main);
@@ -515,14 +518,13 @@ video {
     box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
-/* Modal Styling */
 .modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(15, 23, 42, 0.75);
+    background: var(--modal-bg);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: none;
@@ -581,7 +583,7 @@ video {
 /* Inline Edit styles for Trades */
 .inline-edit-input {
     width: 100%;
-    background: rgba(15, 23, 42, 0.8);
+    background: var(--input-bg);
     border: 1px solid var(--primary-color);
     color: var(--text-main);
     padding: 0.25rem 0.5rem;
@@ -624,5 +626,10 @@ video {
 .logout-btn:hover {
     background: rgba(239, 68, 68, 0.1) !important;
     color: var(--danger) !important;
+}
+
+.btn-icon.download-student-btn:hover {
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--primary-color);
 }
 

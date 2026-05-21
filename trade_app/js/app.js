@@ -160,10 +160,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('filter-trade').addEventListener('change', async (e) => {
         const trade_id = e.target.value;
+        const downloadTradeBtn = document.getElementById('download-trade-btn');
         if(!trade_id) {
             document.getElementById('students-list').innerHTML = '';
+            downloadTradeBtn.style.display = 'none';
             return;
         }
+        
+        // Configure trade-wise download link
+        downloadTradeBtn.href = `${API_DOWNLOAD}?trade_id=${trade_id}`;
+        downloadTradeBtn.style.display = 'inline-flex';
         
         try {
             const res = await fetch(`${API_STUDENTS}?trade_id=${trade_id}`);
@@ -193,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div class="card-actions">
                                 ${badge}
+                                <a href="${API_DOWNLOAD}?student_id=${student.id}" class="btn-icon download-student-btn" title="Download Data" target="_blank"><i class="fa-solid fa-download"></i></a>
                                 <button class="btn-icon edit-btn-icon edit-student-btn" title="Edit Student"><i class="fa-solid fa-user-pen"></i></button>
                                 <button class="btn-icon delete-btn-icon delete-student-btn" title="Delete Student"><i class="fa-solid fa-trash"></i></button>
                             </div>

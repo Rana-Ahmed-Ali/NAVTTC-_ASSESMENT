@@ -232,9 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
     async function startCamera() {
         const video = document.getElementById('camera-stream');
         try {
-            cameraStream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } } 
-            });
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const facingMode = isMobile ? 'environment' : 'user';
+        cameraStream = await navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode, width: { ideal: 1280 }, height: { ideal: 720 } } 
+        });
             video.srcObject = cameraStream;
         } catch (err) {
             console.error("Camera error:", err);

@@ -1,3 +1,13 @@
+// Intercept all fetch calls to catch 401 (Unauthenticated) responses globally
+const originalFetch = window.fetch;
+window.fetch = async function(...args) {
+    const response = await originalFetch(...args);
+    if (response.status === 401) {
+        window.location.href = 'login.php';
+    }
+    return response;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Navigation
     const navItems = document.querySelectorAll('.nav-item');

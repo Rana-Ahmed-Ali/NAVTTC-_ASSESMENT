@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/auth_guard.php';
 require 'db.php';
 
 if (isset($_GET['student_id'])) {

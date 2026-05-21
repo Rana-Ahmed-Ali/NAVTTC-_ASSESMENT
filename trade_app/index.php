@@ -1,0 +1,234 @@
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+    header('Location: login.php');
+    exit;
+}
+$currentUser = htmlspecialchars($_SESSION['user']);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAVTTC Trade Assessment System</title>
+    <meta name="description" content="Manage trades, enroll students, and capture assessment photos efficiently.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <aside class="sidebar glass">
+        <div class="brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            NAVTTC Portal
+        </div>
+        <nav class="nav-menu">
+            <a class="nav-item active" data-target="trades-view">
+                <i class="fa-solid fa-book"></i> Trades (Courses)
+            </a>
+            <a class="nav-item" data-target="students-view">
+                <i class="fa-solid fa-users"></i> Add Students
+            </a>
+            <a class="nav-item" data-target="enrollments-view">
+                <i class="fa-solid fa-list-check"></i> Enrollments
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <i class="fa-solid fa-circle-user"></i>
+                <span><?php echo $currentUser; ?></span>
+            </div>
+            <a href="logout.php" class="nav-item logout-btn" title="Sign Out">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <!-- Trades View -->
+        <section id="trades-view" class="section active">
+            <h2>Manage Trades</h2>
+            <div class="glass card" style="margin-bottom: 2rem;">
+                <h3 class="card-title">Add New Trade</h3>
+                <form id="add-trade-form" style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label for="trade-name">Trade Name</label>
+                        <input type="text" id="trade-name" class="form-control" placeholder="e.g. Web Development" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-plus"></i> Add Trade
+                    </button>
+                </form>
+            </div>
+            
+            <h3>Existing Trades</h3>
+            <div class="grid" id="trades-list" style="margin-top: 1rem;">
+                <!-- Trades will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Add Students View -->
+        <section id="students-view" class="section">
+            <h2>Add Student</h2>
+            <div class="glass card">
+                <form id="add-student-form">
+                    <div class="form-group">
+                        <label for="student-trade">Select Trade</label>
+                        <select id="student-trade" class="form-control" required>
+                            <option value="">Loading trades...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-name">Student Name</label>
+                        <input type="text" id="student-name" class="form-control" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="father-name">Father's Name</label>
+                        <input type="text" id="father-name" class="form-control" placeholder="Father's Name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-user-plus"></i> Enroll Student
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Enrollments View (Select Trade -> List Students) -->
+        <section id="enrollments-view" class="section">
+            <h2>Enrolled Students</h2>
+            <div class="form-group">
+                <label for="filter-trade">Select Trade to View Students</label>
+                <select id="filter-trade" class="form-control">
+                    <option value="">Select a trade</option>
+                </select>
+            </div>
+            
+            <div class="grid" id="students-list" style="margin-top: 2rem;">
+                <!-- Students will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Student Camera/Detail View -->
+        <section id="student-detail-view" class="section">
+            <div class="back-btn" id="back-to-enrollments">
+                <i class="fa-solid fa-arrow-left"></i> Back to Students
+            </div>
+            
+            <div class="student-header glass card">
+                <div>
+                    <h2 id="detail-student-name" style="margin-bottom: 0.5rem;">Student Name</h2>
+                    <p class="card-subtitle" id="detail-father-name">Father: ...</p>
+                </div>
+                <a href="#" id="download-btn" class="btn btn-outline" target="_blank">
+                    <i class="fa-solid fa-download"></i> Download Data
+                </a>
+            </div>
+
+            <div class="camera-container" style="margin-top: 2rem;">
+                <div class="video-wrapper">
+                    <video id="camera-stream" autoplay playsinline></video>
+                    <div class="camera-guideline"></div>
+                </div>
+
+                <h3>Capture Assessment Photos</h3>
+                <div class="photo-slots">
+                    
+                    <div class="photo-slot glass" data-type="Practical 1">
+                        <div class="placeholder">
+                            <i class="fa-solid fa-camera fa-2x" style="color: var(--primary-color); margin-bottom: 1rem;"></i>
+                            <h4>Practical 1</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Front View</p>
+                        </div>
+                        <img class="photo-preview" src="" alt="Practical 1">
+                        <button class="btn btn-primary capture-btn" style="width: 100%; margin-top: 1rem;">Capture</button>
+                    </div>
+
+                    <div class="photo-slot glass" data-type="Practical 2">
+                        <div class="placeholder">
+                            <i class="fa-solid fa-camera fa-2x" style="color: var(--primary-color); margin-bottom: 1rem;"></i>
+                            <h4>Practical 2</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Side View</p>
+                        </div>
+                        <img class="photo-preview" src="" alt="Practical 2">
+                        <button class="btn btn-primary capture-btn" style="width: 100%; margin-top: 1rem;">Capture</button>
+                    </div>
+
+                    <div class="photo-slot glass" data-type="Subjective">
+                        <div class="placeholder">
+                            <i class="fa-solid fa-file-pen fa-2x" style="color: var(--secondary-color); margin-bottom: 1rem;"></i>
+                            <h4>Subjective</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Written Exam</p>
+                        </div>
+                        <img class="photo-preview" src="" alt="Subjective">
+                        <button class="btn btn-primary capture-btn" style="width: 100%; margin-top: 1rem;">Capture</button>
+                    </div>
+
+                    <div class="photo-slot glass" data-type="Objective">
+                        <div class="placeholder">
+                            <i class="fa-solid fa-laptop-code fa-2x" style="color: var(--secondary-color); margin-bottom: 1rem;"></i>
+                            <h4>Objective</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">MCQs / Online</p>
+                        </div>
+                        <img class="photo-preview" src="" alt="Objective">
+                        <button class="btn btn-primary capture-btn" style="width: 100%; margin-top: 1rem;">Capture</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Hidden Canvas for capturing -->
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <!-- Edit Student Modal -->
+    <div id="edit-student-modal" class="modal-backdrop">
+        <div class="glass modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-pen" style="color: var(--primary-color);"></i> Edit Student Details</h3>
+                <button id="close-student-modal" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="edit-student-form-modal">
+                <input type="hidden" id="edit-student-id">
+                <div class="form-group">
+                    <label for="edit-student-trade">Select Trade</label>
+                    <select id="edit-student-trade" class="form-control" required>
+                        <!-- populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-student-name">Student Name</label>
+                    <input type="text" id="edit-student-name" class="form-control" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-father-name">Father's Name</label>
+                    <input type="text" id="edit-father-name" class="form-control" placeholder="Father's Name" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel-student-modal" class="btn btn-outline">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="modal-backdrop">
+        <div class="glass modal-content confirm-dialog">
+            <div class="modal-header">
+                <h3 style="color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> Confirm Delete</h3>
+            </div>
+            <p id="confirm-message" style="margin: 1rem 0; color: var(--text-muted); line-height: 1.5;"></p>
+            <div class="modal-footer">
+                <button type="button" id="confirm-cancel" class="btn btn-outline">Cancel</button>
+                <button type="button" id="confirm-ok" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

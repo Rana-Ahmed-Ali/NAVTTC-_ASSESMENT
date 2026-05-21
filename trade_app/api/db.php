@@ -45,6 +45,31 @@ try {
         )
     ");
 
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS login_attempts (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            ip_address VARCHAR(45) NOT NULL,
+            attempted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ");
+
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(50) NOT NULL UNIQUE,
+            password_hash VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ");
+
+    // Seed default admin user if empty
+    $userCount = (int)$pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+    if ($userCount === 0) {
+        $defaultHash = password_hash('pcctech', PASSWORD_BCRYPT);
+        $stmt = $pdo->prepare("INSERT INTO users (username, password_hash) VALUES ('admin', :hash)");
+        $stmt->execute(['hash' => $defaultHash]);
+    }
+
 } catch(PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }

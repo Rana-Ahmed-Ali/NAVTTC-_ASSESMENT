@@ -322,8 +322,40 @@ document.addEventListener('DOMContentLoaded', () => {
             // Draw cropped frame
             context.drawImage(video, sx, sy, sw, sh, 0, 0, dw, dh);
             
-            // Get base64 image
-            const base64Image = canvas.toDataURL('image/png', 0.85);
+function compressImage(maxKB) {
+    const maxBytes = maxKB * 1024;
+    let curQuality = 0.9;
+    let curWidth = canvas.width;
+    let curHeight = canvas.height;
+    const offCanvas = document.createElement('canvas');
+    const ctx = offCanvas.getContext('2d');
+    while (true) {
+        offCanvas.width = curWidth;
+        offCanvas.height = curHeight;
+        ctx.drawImage(canvas, 0, 0, curWidth, curHeight);
+        const base64 = offCanvas.toDataURL('image/jpeg', curQuality);
+        const headerLen = base64.indexOf(',') + 1;
+        const byteSize = (base64.length - headerLen) * 3 / 4;
+        if (byteSize <= maxBytes) {
+            return base64;
+        }
+        // Reduce quality first (down to 0.5 for noticeable quality)
+        if (curQuality > 0.5) {
+            curQuality -= 0.1;
+            continue;
+        }
+        // If quality low, shrink dimensions
+        if (curWidth > 50 && curHeight > 50) {
+            curWidth = Math.round(curWidth * 0.85);
+            curHeight = Math.round(curHeight * 0.85);
+            curQuality = 0.9; // reset quality for new size
+            continue;
+        }
+        // Fallback: return current base64 even if over limit
+        return base64;
+    }
+}
+let base64Image = compressImage(100);
             
             // Show optimistic preview
             const img = slot.querySelector('.photo-preview');
